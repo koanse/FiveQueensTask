@@ -1,0 +1,192 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#include <stdio.h>
+#pragma hdrstop
+
+const int M = 8; // размер доски
+int MaxL = 6; // максимальное число ферзей
+int foundCount = 0;
+bool showResults = false;
+bool showFoundCount = true;
+
+struct Position
+{
+	int x, y;
+};
+
+struct Board
+{
+	byte cells[M][M];
+};
+
+Position Co[6];
+Board Bo;
+Board BoCo[6];
+
+
+
+int L;
+
+void Show()
+{
+int i,j,k,f;
+
+for (j=M-1; j >=0 ; j--) {
+	printf("%d", j);
+	for (i = 0; i < M; i++) {
+		f = 0;
+		for (k=0; k < L; k++) {
+			if (Co[k].x==i && Co[k].y==j) {
+				f=k;
+			}
+		}
+	  if (f==0)
+	  {
+	   printf(" ");
+	  }
+	   else
+	   {
+		printf("%d", f);
+	   }
+	}
+	printf("      ");
+
+	for (i=0; i < M; i++) {
+		if (Bo.cells[i][j]==0) printf(" ");
+		else printf("%d", Bo.cells[i][j]);
+	}
+
+	printf("\n");
+}
+
+	printf("      ");
+		for (i=0; i < M; i++) {
+		printf("%c", 'a' - 1 + i);
+	}
+}
+
+void Put(int x, int y, int L)
+{
+	int i, j;
+	bool t;
+	L++;
+	BoCo[L] = Bo;
+	Co[L].x = x;
+	Co[L].y = y;
+
+	for (i = 0; i < M; i++)
+	{
+		Bo.cells[i][y] = L;
+		Bo.cells[x][i] = L;
+	}
+
+	for (i = 0; i < M; i++)
+	{
+		Bo.cells[i][y] = L;
+		Bo.cells[x][i] = L;
+	}
+
+	for (i=-M+1; i< M;i++)
+	{
+		if (((x+i)>0) && ((y+i)>0) && ((x+i)<M) && ((y+i)<M))
+		{
+			Bo.cells[x+i][y+i]=L;
+		}
+		if (((x+i)>0) && ((y-i)>0) && ((x+i)<M) && ((y-i)<M))
+		{
+			Bo.cells[x+i][y-i]=L;
+		}
+	}
+
+	if (L == MaxL)
+	{
+		t = true;
+		for (i = 0; i < M; i++)
+		{
+			for (j = 0; j < M; j++)
+			{
+				t=t && (Bo.cells[i][j] != 0);
+			}
+		}
+
+		if (t)
+		{
+		  foundCount++;
+		  if (showResults)
+		  {
+			printf("\nFound: ");
+
+			for(i = 0; i < L; i++)
+			{
+				printf("%c%d   ", 'a' + Co[i].x, Co[i].y);
+			}
+
+			printf("\n");
+			printf("\n");
+
+			Show();
+		  }
+
+		  if (showFoundCount)
+		  {
+				if (foundCount % 1000 == 0)
+				{
+				  printf("Found:%d\n", foundCount);
+				}
+		  }
+		}
+	}
+	else
+	{
+		for(i = 0; i < M; i++)
+		{
+			for(j = 0; j < M; j++)
+			{
+				Put(i,j, L);
+			}
+		}
+	}
+	Bo = BoCo[L];
+	L--;
+}
+
+#pragma argsused
+int main(int argc, char* argv[])
+{
+	char answer[100];
+	int n;
+
+	printf("The queen count (4/5/6):\n");
+	scanf("%d", &MaxL);
+
+	if (MaxL != 4 && MaxL != 5 && MaxL != 6)
+	{
+		printf("The queen count should be 4, 5, 6:\n");
+		return 0;
+	}
+
+	printf("Show found count (y/n): \n");
+	scanf("%s", answer);
+	showFoundCount = answer[0] == 'y';
+
+	printf("Show results (y/n): \n");
+	scanf("%s", answer);
+	showResults = answer[0] == 'y';
+
+
+	for (int i=0; i<M; i++)
+	{
+		for (int j=0; j<M; j++)
+		{
+			Bo.cells[i][j] = 0;
+		}
+	}
+	L = 0;
+	Put(1, 1, L);
+
+	printf("Found: %d\n", foundCount);
+
+	scanf("%d", L);
+	return 0;
+}

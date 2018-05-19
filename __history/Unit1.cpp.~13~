@@ -116,7 +116,7 @@ void Put(int x, int y, int L)
 			{
 				for (int j = 0; j < MaxL; j++)
 				{
-					t=t && !(i != j && Co[i].x == Co[j].x && Co[i].y == Co[j].y);
+					t=t && !(Co[i].x == Co[j].x && Co[i].y == Co[j].y);
 				}
 			}
 		}

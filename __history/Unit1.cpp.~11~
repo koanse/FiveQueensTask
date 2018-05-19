@@ -20,13 +20,15 @@ struct Board
 	byte cells[M][M];
 };
 
+Position Co[6];
 Board Bo;
 Board BoCo[6];
-Position Co[6];
+
+
 
 int L;
 
-void Show()
+void Show(int L)
 {
 int i,j,k,f;
 
@@ -34,7 +36,7 @@ for (j=M-1; j >=0 ; j--) {
 	printf("%d", j);
 	for (i = 0; i < M; i++) {
 		f = 0;
-		for (k=0; k <= L; k++) {
+		for (k=0; k < L; k++) {
 			if (Co[k].x==i && Co[k].y==j) {
 				f=k;
 			}
@@ -108,6 +110,14 @@ void Put(int x, int y, int L)
 			}
 		}
 
+		for (int i = 0; i < MaxL; i++)
+		{
+			for (int j = 0; j < MaxL; j++)
+			{
+				t=t && (Co[i].x != Co[j].x && Co[i].y != Co[j].y);
+			}
+		}
+
 		if (t)
 		{
 		  foundCount++;
@@ -123,7 +133,7 @@ void Put(int x, int y, int L)
 			printf("\n");
 			printf("\n");
 
-			Show();
+			Show(L);
 		  }
 
 		  if (showFoundCount)

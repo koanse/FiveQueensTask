@@ -28,7 +28,7 @@ Board BoCo[6];
 
 int L;
 
-void Show()
+void Show(int L)
 {
 int i,j,k,f;
 
@@ -110,6 +110,14 @@ void Put(int x, int y, int L)
 			}
 		}
 
+		for (int i = 0; i < MaxL; i++)
+		{
+			for (int j = 0; j < MaxL; j++)
+			{
+				t=t && (Ño.x[i] != Ño.x[j] && Ño.y[i] != Ño.y[j]);
+			}
+		}
+
 		if (t)
 		{
 		  foundCount++;
@@ -125,7 +133,7 @@ void Put(int x, int y, int L)
 			printf("\n");
 			printf("\n");
 
-			Show();
+			Show(L);
 		  }
 
 		  if (showFoundCount)

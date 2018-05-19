@@ -112,17 +112,6 @@ void Put(int x, int y, int L)
 
 		if (t)
 		{
-			for (int i = 0; i < MaxL; i++)
-			{
-				for (int j = 0; j < MaxL; j++)
-				{
-					t=t && !(i != j && Co[i].x == Co[j].x && Co[i].y == Co[j].y);
-				}
-			}
-		}
-
-		if (t)
-		{
 		  foundCount++;
 		  if (showResults)
 		  {
